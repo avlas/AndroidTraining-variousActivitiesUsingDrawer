@@ -24,8 +24,9 @@
     <string name="radio_female">Female</string>
     <string name="chk_ios">ios</string>
     <string name="chk_android">android</string>
-    
-     <!-- UsersActivity -->
+
+    <!-- UsersActivity -->
     <string name="title_activity_users">Users</string>
+    <string name="title_activity_user_detail">UserDetailActivity</string>
 
 </resources>

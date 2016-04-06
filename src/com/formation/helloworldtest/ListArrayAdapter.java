@@ -21,10 +21,10 @@ public class ListArrayAdapter extends ArrayAdapter<User> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-		View rowView = inflater.inflate(R.layout.activity_user, parent, false);
+		View rowView = inflater.inflate(R.layout.activity_user_list, parent, false);
 
 		ImageView logoView = (ImageView) rowView.findViewById(R.id.user_logo);
-		logoView.setImageResource(R.drawable.nature);
+		logoView.setImageResource(values.get(position).getPhoto());
 
 		TextView fullnameView = (TextView) rowView.findViewById(R.id.user_fullname);
 		fullnameView.setText(values.get(position).getFirstName() + " " + values.get(position).getLastName());

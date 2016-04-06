@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,20 +33,45 @@ public class UsersActivity extends Activity {
 		// R.layout.activity_user_listitem, R.id.user, users);
 		// listUsers.setAdapter(adapter);
 
-		ListArrayAdapter adapter = new ListArrayAdapter(listUsers.getContext(), R.layout.activity_user, users);
+		ListArrayAdapter adapter = new ListArrayAdapter(listUsers.getContext(), R.layout.activity_user_list, users);
 		listUsers.setAdapter(adapter);
 
+		addListenerOnUsers();
+	}
+
+	private void addListenerOnUsers() {
 		listUsers.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
 				selectedPosition = position;
 				selectedUser = (User) parent.getItemAtPosition(position);
 
-				Intent userActivity = new Intent(UsersActivity.this, UserActivity.class);
+				Intent userActivity = new Intent(UsersActivity.this, UserDetailActivity.class);
 				userActivity.putExtra("user", selectedUser);
 				startActivityForResult(userActivity, PICK_USER);
 			}
 		});
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// Check which request we're responding to
+		if (requestCode == PICK_USER) {
+			if (requestCode == RESULT_OK) {
+				User resultUser = (User) data.getExtras().get("result");
+				if (resultUser != null) {
+					LayoutInflater inflater = LayoutInflater.from(listUsers.getContext());
+					View userView = inflater.inflate(R.layout.activity_user_list, listUsers, false);
+
+					if (resultUser.isActive()) {
+						// listUsers.getItemAtPosition(selectedPosition);
+						userView.setBackgroundColor(R.color.green);
+					} else {
+						userView.setBackgroundColor(R.color.red);
+					}
+				}
+			}
+		}
 	}
 
 	protected void onPause() {
