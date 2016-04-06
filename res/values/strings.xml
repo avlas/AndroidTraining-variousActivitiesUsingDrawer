@@ -27,6 +27,6 @@
 
     <!-- UsersActivity -->
     <string name="title_activity_users">Users</string>
-    <string name="title_activity_user_detail">UserDetailActivity</string>
+    <string name="title_activity_user_detail">User Detail</string>
 
 </resources>

@@ -46,6 +46,7 @@ public class UserDetailActivity extends Activity {
 				Intent usersActivity = new Intent(UserDetailActivity.this, UsersActivity.class);
 				usersActivity.putExtra("result", user);
 				setResult(Activity.RESULT_OK, usersActivity);
+				finish();
 			}
 		});
 	}

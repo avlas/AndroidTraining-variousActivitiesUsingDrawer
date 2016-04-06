@@ -17,30 +17,32 @@ import android.widget.ListView;
 public class UsersActivity extends Activity {
 
 	static final int PICK_USER = 1;
-	private ListView listUsers;
+	private ListView listUsersView;
 	private User selectedUser;
 	private static int selectedPosition = -1;
+	private ListArrayAdapter adapter;
+	List<User> users;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_users);
 
-		List<User> users = buildUsers();
+		users = buildUsers();
 
-		listUsers = (ListView) findViewById(R.id.users);
+		listUsersView = (ListView) findViewById(R.id.users);
 		// ArrayAdapter adapter = new ArrayAdapter<User>(listUsers.getContext(),
 		// R.layout.activity_user_listitem, R.id.user, users);
 		// listUsers.setAdapter(adapter);
 
-		ListArrayAdapter adapter = new ListArrayAdapter(listUsers.getContext(), R.layout.activity_user_list, users);
-		listUsers.setAdapter(adapter);
+		adapter = new ListArrayAdapter(listUsersView.getContext(), R.layout.activity_user_list, users);
+		listUsersView.setAdapter(adapter);		
 
 		addListenerOnUsers();
 	}
 
 	private void addListenerOnUsers() {
-		listUsers.setOnItemClickListener(new OnItemClickListener() {
+		listUsersView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
 				selectedPosition = position;
@@ -53,22 +55,25 @@ public class UsersActivity extends Activity {
 		});
 	}
 
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// Check which request we're responding to
 		if (requestCode == PICK_USER) {
-			if (requestCode == RESULT_OK) {
+			if (resultCode == RESULT_OK) {
 				User resultUser = (User) data.getExtras().get("result");
 				if (resultUser != null) {
-					LayoutInflater inflater = LayoutInflater.from(listUsers.getContext());
-					View userView = inflater.inflate(R.layout.activity_user_list, listUsers, false);
-
-					if (resultUser.isActive()) {
-						// listUsers.getItemAtPosition(selectedPosition);
-						userView.setBackgroundColor(R.color.green);
+					users.set(selectedPosition, resultUser);
+					adapter.updateData(users);
+					adapter.notifyDataSetChanged();
+/*								
+					View selectedUserView = listUsersView.getChildAt(selectedPosition);
+					
+					//selectedUser.setActive(resultUser.isActive());
+					if (resultUser.isActive()) {			
+						selectedUserView.setBackgroundColor(R.color.green);
 					} else {
-						userView.setBackgroundColor(R.color.red);
-					}
+						selectedUserView.setBackgroundColor(R.color.red);
+					}*/
 				}
 			}
 		}
