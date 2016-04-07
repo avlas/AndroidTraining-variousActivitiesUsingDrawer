@@ -1,4 +1,4 @@
-package com.formation.helloworldtest;
+package com.formation.activities;
 
 import android.app.Activity;
 import android.content.Context;

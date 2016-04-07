@@ -1,4 +1,4 @@
-package com.formation.helloworldtest;
+package com.formation.activities;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.formation.helloworldtest.ContactsActivity" >
+    tools:context="com.formation.activities.ContactsActivity" >
 
     <item
         android:id="@+id/action_settings"

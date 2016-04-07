@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.formation.helloworldtest"
+    package="com.formation.activities"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="23" />
+
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -28,23 +28,43 @@
         </activity>
         <activity
             android:name=".MirrorTextActivity"
-            android:label="@string/title_activity_mirror_text" >
+            android:label="@string/title_activity_mirror_text"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.formation.activities.MainActivity" />
         </activity>
         <activity
             android:name=".FormActivity"
-            android:label="@string/title_activity_form" >
+            android:label="@string/title_activity_form"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.formation.activities.MainActivity" />
         </activity>
         <activity
             android:name=".UsersActivity"
-            android:label="@string/title_activity_users" >
+            android:label="@string/title_activity_users"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.formation.activities.MainActivity" />
         </activity>
         <activity
             android:name=".UserDetailActivity"
-            android:label="@string/title_activity_user_detail" >
+            android:label="@string/title_activity_user_detail"
+            android:parentActivityName=".UsersActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.formation.activities.UsersActivity" />
         </activity>
         <activity
             android:name=".ContactsActivity"
-            android:label="@string/title_activity_contacts" >
+            android:label="@string/title_activity_contacts"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.formation.activities.MainActivity" />
         </activity>
     </application>
 

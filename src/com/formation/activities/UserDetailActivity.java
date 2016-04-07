@@ -1,4 +1,4 @@
-package com.formation.helloworldtest;
+package com.formation.activities;
 
 import java.io.BufferedInputStream;
 import java.io.File;
