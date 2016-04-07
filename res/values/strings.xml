@@ -3,20 +3,20 @@
 
     <!-- common -->
     <string name="back">Back</string>
+    <string name="save">Save</string>
     <string name="action_settings">Settings</string>
 
     <!-- MainActivity -->
     <string name="app_name">HelloWorldTest</string>
     <string name="hello_world">Hello world!</string>
-    <string name="mirror_text">Mirror Text</string>
+    <string name="mirror_text">MirrorText</string>
     <string name="form">Form</string>
     <string name="users">Users</string>
+    <string name="contacts">Contacts</string>
 
     <!-- MirrorTextActivity -->
-    <string name="title_activity_mirror_text">Mirror Text</string>
-    <string name="redirected">You were redirected!</string>
+    <string name="title_activity_mirror_text">MirrorText</string>
     <string name="enterText">Please enter a text</string>
-    <string name="text_changed">"Text changed"</string>
 
     <!-- FormActivity -->
     <string name="title_activity_form">Form</string>
@@ -27,6 +27,11 @@
 
     <!-- UsersActivity -->
     <string name="title_activity_users">Users</string>
+
+    <!-- UserDetailActivity -->
     <string name="title_activity_user_detail">User Detail</string>
+
+    <!-- ContactsActivity -->
+    <string name="title_activity_contacts">Contacts</string>
 
 </resources>

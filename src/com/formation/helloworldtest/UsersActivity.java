@@ -6,7 +6,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,10 +17,10 @@ import android.widget.ListView;
 public class UsersActivity extends Activity {
 
 	static final int PICK_USER = 1;
-	private ListView listUsersView;
+	private ListView usersView;
 	private User selectedUser;
 	private static int selectedPosition = -1;
-	private ListArrayAdapter adapter;
+	private UserArrayAdapter adapter;
 	List<User> users;
 
 	@Override
@@ -30,68 +30,83 @@ public class UsersActivity extends Activity {
 
 		users = buildUsers();
 
-		listUsersView = (ListView) findViewById(R.id.users);
+		usersView = (ListView) findViewById(R.id.list_users);
+
+		adapter = new UserArrayAdapter(usersView.getContext(), R.layout.activity_user_row, users);
+		usersView.setAdapter(adapter);
+
 		// ArrayAdapter adapter = new ArrayAdapter<User>(listUsers.getContext(),
-		// R.layout.activity_user_listitem, R.id.user, users);
-		// listUsers.setAdapter(adapter);
+		// R.layout.activity_user_list, R.id.user, users);
 
-		adapter = new ListArrayAdapter(listUsersView.getContext(), R.layout.activity_user_list, users);
-		listUsersView.setAdapter(adapter);		
-
-		addListenerOnUsers();
+		addListenerOnList();
 	}
 
-	private void addListenerOnUsers() {
-		listUsersView.setOnItemClickListener(new OnItemClickListener() {
+	private List<User> buildUsers() {
+		List<User> users = new ArrayList<User>();
+		users.add(new User("Tata", "Tete", R.drawable.nature));
+		users.add(new User("Tete", "Titi", R.drawable.nature));
+		users.add(new User("Titi", "Toto", R.drawable.nature));
+		users.add(new User("Toto", "Tutu", R.drawable.nature));
+		users.add(new User("Tutu", "Tata", R.drawable.nature));
+		return users;
+	}
+
+	private void addListenerOnList() {
+		usersView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
 				selectedPosition = position;
 				selectedUser = (User) parent.getItemAtPosition(position);
 
 				Intent userActivity = new Intent(UsersActivity.this, UserDetailActivity.class);
-				userActivity.putExtra("user", selectedUser);
+				userActivity.putExtra("requestUser", selectedUser);
 				startActivityForResult(userActivity, PICK_USER);
 			}
 		});
 	}
 
-	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
 		if (requestCode == PICK_USER) {
 			if (resultCode == RESULT_OK) {
-				User resultUser = (User) data.getExtras().get("result");
-				if (resultUser != null) {
-					users.set(selectedPosition, resultUser);
-					adapter.updateData(users);
-					adapter.notifyDataSetChanged();
-/*								
-					View selectedUserView = listUsersView.getChildAt(selectedPosition);
-					
-					//selectedUser.setActive(resultUser.isActive());
-					if (resultUser.isActive()) {			
+				User responseUser = (User) data.getExtras().get("responseUser");
+				if (responseUser != null) {
+					users.set(selectedPosition, responseUser);
+					Log.e("SELECTED_USER", users.get(selectedPosition).toString());
+
+					/*
+					 * adapter.updateData(users); Log.e("RESPONSE_USER",
+					 * responseUser.toString());
+					 */
+
+					View selectedUserView = usersView.getChildAt(selectedPosition);
+					boolean isActive = UserDetailActivity.preferences.getBoolean("isActive", responseUser.isActive());
+					if (isActive) {
 						selectedUserView.setBackgroundColor(R.color.green);
 					} else {
 						selectedUserView.setBackgroundColor(R.color.red);
-					}*/
+					}
+					
+					adapter = new UserArrayAdapter(usersView.getContext(), R.layout.activity_user_row, users);
+					usersView.setAdapter(adapter);
+
+					refreshList();
 				}
 			}
 		}
 	}
 
+	private void refreshList() {
+		adapter.notifyDataSetChanged();
+/*		usersView.invalidate();
+		usersView.invalidateViews();*/
+	}
+
 	protected void onPause() {
 		super.onPause();
 		setContentView(R.layout.activity_users);
-	}
-
-	private List<User> buildUsers() {
-		List<User> users = new ArrayList<User>();
-		users.add(new User("Tata", "Tete", R.drawable.nature, true));
-		users.add(new User("Tete", "Titi", R.drawable.nature, false));
-		users.add(new User("Titi", "Toto", R.drawable.nature, true));
-		users.add(new User("Toto", "Tutu", R.drawable.nature, true));
-		users.add(new User("Tutu", "Tata", R.drawable.nature, false));
-		return users;
 	}
 
 	@Override

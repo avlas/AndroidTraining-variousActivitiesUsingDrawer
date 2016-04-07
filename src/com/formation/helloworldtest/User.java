@@ -9,12 +9,11 @@ public class User implements Serializable {
 	private String lastName;
 	private boolean isActive;
 
-	public User(String firstName, String lastName, int photo, boolean isActive) {
+	public User(String firstName, String lastName, int photo) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.photo = photo;
-		this.isActive = isActive;
 	}
 
 	public int getPhoto() {
@@ -51,7 +50,7 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return photo + firstName + lastName + isActive;
+		return photo + " " + firstName + " " + lastName + " " + isActive;
 	}
 
 }

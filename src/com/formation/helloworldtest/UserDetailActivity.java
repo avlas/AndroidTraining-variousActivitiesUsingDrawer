@@ -1,8 +1,23 @@
 package com.formation.helloworldtest;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,42 +28,59 @@ import android.widget.TextView;
 
 public class UserDetailActivity extends Activity {
 
+	public static SharedPreferences preferences;
+	private User selectedUser;
 	private CheckBox isActive;
-	private User user;
+
+	// Storage permissions
+	private static final int REQUEST_EXTERNAL_STORAGE = 1;
+	private static String[] PERMISSIONS_STORAGE = { Manifest.permission.READ_EXTERNAL_STORAGE,
+			Manifest.permission.WRITE_EXTERNAL_STORAGE };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_user_detail);
 
-		user = (User) getIntent().getExtras().get("user");
+		preferences = this.getSharedPreferences("saveUserDetail", Context.MODE_WORLD_WRITEABLE);
 
-		ImageView logo = (ImageView) findViewById(R.id.user_logo);
-		logo.setImageResource(user.getPhoto());
+		selectedUser = (User) getIntent().getExtras().get("requestUser");
 
-		TextView fullname = (TextView) findViewById(R.id.user_fullname);
-		fullname.setText(user.getFirstName() + " " + user.getLastName());
-
-		isActive = (CheckBox) findViewById(R.id.checkBox_isActive);
-		isActive.setChecked(user.isActive());
-		if (user.isActive() == Boolean.TRUE) {
-			isActive.setText("Actif");
-		} else {
-			isActive.setText("Inactif");
-		}
-
-		addListenerOnIsActive();
+		initView();
 
 		Button backButton = (Button) findViewById(R.id.button_back);
 		backButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				SharedPreferences.Editor editor = preferences.edit();
+				editor.putBoolean("isActive", selectedUser.isActive());
+				editor.commit();
+
 				Intent usersActivity = new Intent(UserDetailActivity.this, UsersActivity.class);
-				usersActivity.putExtra("result", user);
+				usersActivity.putExtra("responseUser", selectedUser);
 				setResult(Activity.RESULT_OK, usersActivity);
 				finish();
 			}
 		});
+	}
+
+	private void initView() {
+		ImageView logo = (ImageView) findViewById(R.id.detail_logo);
+		logo.setImageResource(selectedUser.getPhoto());
+
+		TextView fullname = (TextView) findViewById(R.id.detail_fullname);
+		fullname.setText(selectedUser.getFirstName() + " " + selectedUser.getLastName());
+
+		isActive = (CheckBox) findViewById(R.id.detail_isActive);
+		isActive.setChecked(selectedUser.isActive());
+		if (selectedUser.isActive() == Boolean.TRUE) {
+			isActive.setText("Actif");
+		} else {
+			isActive.setText("Inactif");
+		}
+		addListenerOnIsActive();
+
+		readExternLogoAfterStoragePermissionsVerification();
 	}
 
 	private void addListenerOnIsActive() {
@@ -56,14 +88,72 @@ public class UserDetailActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				if (((CheckBox) v).isChecked()) {
-					user.setActive(Boolean.TRUE);
+					selectedUser.setActive(Boolean.TRUE);
 					isActive.setText("Actif");
 				} else {
-					user.setActive(Boolean.FALSE);
+					selectedUser.setActive(Boolean.FALSE);
 					isActive.setText("Inactif");
 				}
+				readExternLogoAfterStoragePermissionsVerification();
 			}
 		});
+	}
+
+	public void readExternLogoAfterStoragePermissionsVerification() {
+		if (ContextCompat.checkSelfPermission(UserDetailActivity.this,
+				Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+			if (ActivityCompat.shouldShowRequestPermissionRationale(UserDetailActivity.this,
+					Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+			} else {
+				ActivityCompat.requestPermissions(UserDetailActivity.this,
+						new String[] { Manifest.permission.READ_EXTERNAL_STORAGE }, REQUEST_EXTERNAL_STORAGE);
+			}
+		} else {
+			if (selectedUser.isActive() == Boolean.TRUE) {
+				readExternLogo("active");
+			} else {
+				readExternLogo("inactive");
+			}
+		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+		switch (requestCode) {
+		case REQUEST_EXTERNAL_STORAGE: {
+			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				if (selectedUser.isActive() == Boolean.TRUE) {
+					readExternLogo("active");
+				} else {
+					readExternLogo("inactive");
+				}
+			} else {
+			}
+			return;
+		}
+		}
+	}
+
+	public void readExternLogo(String photoName) {
+		String dirName = "Download";
+		String photo = photoName + ".jpg";
+
+		File photoFile = new File(File.separator + "sdcard" + File.separator + dirName + File.separator + photo);
+		InputStream iStream;
+		try {
+			iStream = new BufferedInputStream(new FileInputStream(photoFile));
+			Bitmap bm = BitmapFactory.decodeStream(iStream);
+			iStream.close();
+
+			ImageView sdcardLogo = (ImageView) findViewById(R.id.detail_extern_logo);
+			sdcardLogo.setImageBitmap(bm);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	protected void onPause() {

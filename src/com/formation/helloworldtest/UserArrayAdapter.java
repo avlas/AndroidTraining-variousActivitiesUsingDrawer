@@ -10,10 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ListArrayAdapter extends ArrayAdapter<User> {
+public class UserArrayAdapter extends ArrayAdapter<User> {
+	
 	private List<User> values;
 
-	public ListArrayAdapter(Context context, int rowLine, List<User> values) {
+	public UserArrayAdapter(Context context, int rowLine, List<User> values) {
 		super(context, rowLine, values);
 		this.values = values;
 	}
@@ -21,17 +22,17 @@ public class ListArrayAdapter extends ArrayAdapter<User> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-		View rowView = inflater.inflate(R.layout.activity_user_list, parent, false);
+		View rowView = inflater.inflate(R.layout.activity_user_row, parent, false);
 
-		User selectedUser = values.get(position);
+		User user = values.get(position);
 		
-		ImageView logoView = (ImageView) rowView.findViewById(R.id.user_logo);
-		logoView.setImageResource(selectedUser.getPhoto());
+		ImageView logoView = (ImageView) rowView.findViewById(R.id.row_logo);
+		logoView.setImageResource(user.getPhoto());
 
-		TextView fullnameView = (TextView) rowView.findViewById(R.id.user_fullname);
-		fullnameView.setText(selectedUser.getFirstName() + " " + selectedUser.getLastName());
+		TextView fullnameView = (TextView) rowView.findViewById(R.id.row_fullname);
+		fullnameView.setText(user.getFirstName() + " " + user.getLastName());
 
-		if (selectedUser.isActive()) {			
+		if (user.isActive()) {			
 			rowView.setBackgroundColor(R.color.green);
 		} else {
 			rowView.setBackgroundColor(R.color.red);
@@ -39,11 +40,11 @@ public class ListArrayAdapter extends ArrayAdapter<User> {
 		return rowView;
 	}
 
-	public void updateData(List<User> list) {
+/*	public void updateData(List<User> list) {
 		super.clear();
 		super.addAll(list.toArray(new User[0]));
 		
 		this.values.clear();
 		this.values.addAll(list);
-	}
+	}*/
 }

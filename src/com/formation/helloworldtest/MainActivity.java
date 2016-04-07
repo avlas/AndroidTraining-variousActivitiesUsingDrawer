@@ -41,6 +41,15 @@ public class MainActivity extends Activity {
 				startActivity(usersActivity);
 			}
 		});
+
+		Button contactsBtn = (Button) findViewById(R.id.button_contacts);
+		contactsBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent contactsActivity = new Intent(MainActivity.this, ContactsActivity.class);
+				startActivity(contactsActivity);
+			}
+		});
 	}
 
 	protected void onPause() {

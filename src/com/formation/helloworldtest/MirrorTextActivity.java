@@ -15,25 +15,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class MirrorTextActivity extends Activity {
-
-	TextView redirectedView;
-	TextView reversedView;
-	EditText toReverseView;
+	
 	SharedPreferences preferences;
+	EditText toReverseView;
+	TextView reversedView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		preferences = this.getSharedPreferences ("SavedMirrorInputs", Context.MODE_WORLD_WRITEABLE);
-		
-//		if (savedInstanceState != null) {
-//			super.onRestoreInstanceState(savedInstanceState);
-//		} else {
-			super.onCreate(savedInstanceState);
-//		}					
+		super.onCreate(savedInstanceState);					
 		setContentView(R.layout.activity_mirror_text);
 		
-		redirectedView = (TextView) findViewById(R.id.label_redirected);
-		redirectedView.setText(R.string.text_changed);
+		preferences = this.getSharedPreferences ("saveMirrorInputs", Context.MODE_WORLD_WRITEABLE);
 		
 		toReverseView = (EditText) findViewById(R.id.textarea_toReverse);
 		reversedView = (TextView) findViewById(R.id.label_reversed);
@@ -61,8 +53,8 @@ public class MirrorTextActivity extends Activity {
 			}
 		});
 
-		Button backButton = (Button) findViewById(R.id.button_back);
-		backButton.setOnClickListener(new View.OnClickListener() {
+		Button saveButton = (Button) findViewById(R.id.button_save);
+		saveButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent mainActivity = new Intent(MirrorTextActivity.this, MainActivity.class);
@@ -79,11 +71,6 @@ public class MirrorTextActivity extends Activity {
 		editor.putString("toReverse", toReverseView.getText().toString());
 		editor.putString("reversed", reversedView.getText().toString());
 		editor.commit();
-		
-//		Bundle savedInstanceState = new Bundle();
-//		savedInstanceState.putString("toReverse", toReverseView.getText().toString());
-//		savedInstanceState.putString("reversed", reversedView.getText().toString());
-//		super.onSaveInstanceState(savedInstanceState);
 	}
 
 	@Override

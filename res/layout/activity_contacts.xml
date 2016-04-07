@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ll_users"
+    android:id="@+id/ll_contacts"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -11,9 +11,9 @@
     tools:context="com.formation.helloworldtest.UsersActivity" >
 
     <ListView
-        android:id="@+id/list_users"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/contacts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@android:color/background_light" />
 
 </LinearLayout>

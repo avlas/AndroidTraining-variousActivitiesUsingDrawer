@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_mirrorText"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -8,12 +9,6 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.formation.helloworldtest.MirrorTextActivity" >
-
-    <TextView
-        android:id="@+id/label_redirected"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/redirected" />
 
     <EditText
         android:id="@+id/textarea_toReverse"
@@ -38,9 +33,9 @@
         android:typeface="serif" />
 
     <Button
-        android:id="@+id/button_back"
+        android:id="@+id/button_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/back" />
+        android:text="@string/save" />
 
 </LinearLayout>

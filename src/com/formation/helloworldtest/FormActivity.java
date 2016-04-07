@@ -41,7 +41,7 @@ public class FormActivity extends Activity {
 		int selectedIdRadioBtn = sexRadioGroup.getCheckedRadioButtonId();
 		RadioButton sexRadioBtn = (RadioButton) findViewById(selectedIdRadioBtn);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -60,6 +60,5 @@ public class FormActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
 
 }
