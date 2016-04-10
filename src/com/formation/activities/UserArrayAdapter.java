@@ -5,7 +5,6 @@ import java.util.List;
 import com.formation.model.User;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -28,9 +27,12 @@ public class UserArrayAdapter extends ArrayAdapter<User> {
 		View rowView;
 		if (convertView == null) {
 			// inflater = pour fabriquer une view a partir d'un fichier XML(le model d'une ligne)
-			LayoutInflater inflater = LayoutInflater.from(listView.getContext());
-			rowView = inflater.inflate(R.layout.activity_users_fragment_row, listView, false);
+//			LayoutInflater inflater = LayoutInflater.from(listView.getContext());
+//			rowView = inflater.inflate(R.layout.activity_users_fragment_row, listView, false);
 
+			rowView = super.getView(position, convertView, listView);
+			
+//			User user = values.get(position);
 			User user = getItem(position);
 
 			ImageView logoView = (ImageView) rowView.findViewById(R.id.row_logo);

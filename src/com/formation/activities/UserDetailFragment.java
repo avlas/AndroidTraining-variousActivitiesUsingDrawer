@@ -21,14 +21,17 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * A fragment representing a single User detail screen. This fragment is either
+ * contained in a {@link UserListActivity} in two-pane mode (on tablets) or a
+ * {@link UserDetailActivity} on handsets.
+ */
 public class UserDetailFragment extends Fragment {
 
 	public static final String ARG_USER_ID = "user_id";
