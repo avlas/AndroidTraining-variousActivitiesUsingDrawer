@@ -30,35 +30,36 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class UserDetailFragment extends Fragment {
+
 	public static final String ARG_USER_ID = "user_id";
-	private View view;	
+	private View view;
 	private User user;
 	private CheckBox isActiveView;
 	private SharedPreferences prefs;
-	
+
 	// Storage permissions
 	private static final int REQUEST_EXTERNAL_STORAGE = 1;
 	private static String[] PERMISSIONS_STORAGE = { Manifest.permission.READ_EXTERNAL_STORAGE,
 			Manifest.permission.WRITE_EXTERNAL_STORAGE };
-	
+
 	public UserDetailFragment() {
 	}
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
+		prefs = getActivity().getSharedPreferences(this.getClass().toString(), Context.MODE_WORLD_READABLE);
+
 		if (getArguments().containsKey(ARG_USER_ID)) {
 			user = UserContent.USER_MAP.get(getArguments().getString(ARG_USER_ID));
 		}
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		view = inflater.inflate(R.layout.activity_user_detail_fragment, container, false);
-
-		prefs = getActivity().getSharedPreferences(this.getClass().toString(), Context.MODE_WORLD_READABLE);
 
 		if (user != null) {
 			initViews();
@@ -73,7 +74,7 @@ public class UserDetailFragment extends Fragment {
 		TextView fullname = (TextView) view.findViewById(R.id.detail_fullname);
 		fullname.setText(user.getFirstName() + " " + user.getLastName());
 
-		isActiveView = (CheckBox) view.findViewById(R.id.detail_isActive);		
+		isActiveView = (CheckBox) view.findViewById(R.id.detail_isActive);
 		if (user.isActive() == Boolean.TRUE) {
 			isActiveView.setText("Actif");
 			isActiveView.setChecked(Boolean.TRUE);
@@ -81,34 +82,29 @@ public class UserDetailFragment extends Fragment {
 			isActiveView.setText("Inactif");
 			isActiveView.setChecked(Boolean.FALSE);
 		}
-		
+
 		addListenerOnIsActive();
-		
+		storeInputChanges();
 		readExternLogoAfterStoragePermissionsVerification();
 	}
 
 	private void addListenerOnIsActive() {
 		isActiveView.setOnClickListener(new View.OnClickListener() {
-			SharedPreferences.Editor editor = prefs.edit();
-			
 			@Override
 			public void onClick(View v) {
 				if (((CheckBox) v).isChecked()) {
 					isActiveView.setText("Actif");
 					user.setActive(Boolean.TRUE);
-					editor.putBoolean("isActive", Boolean.TRUE);
 				} else {
 					isActiveView.setText("Inactif");
 					user.setActive(Boolean.FALSE);
-					editor.putBoolean("isActive", Boolean.FALSE);
 				}
-				editor.commit();
-				
+				storeInputChanges();
 				readExternLogoAfterStoragePermissionsVerification();
 			}
 		});
 	}
-	
+
 	public void readExternLogoAfterStoragePermissionsVerification() {
 		if (ContextCompat.checkSelfPermission(getActivity(),
 				Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -165,16 +161,28 @@ public class UserDetailFragment extends Fragment {
 			e.printStackTrace();
 		}
 	}
-	
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		storeInputChanges();
+	}
+
 	@Override
 	public void onResume() {
+		super.onResume();
+
 		// Restore the values of the checkbox
 		if (user.isActive() == Boolean.TRUE) {
 			isActiveView.setChecked(prefs.getBoolean("isActive", Boolean.TRUE));
 		} else {
 			isActiveView.setChecked(prefs.getBoolean("isActive", Boolean.FALSE));
-		}		
-		
-		super.onResume();
+		}
+	}
+
+	private void storeInputChanges() {
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putBoolean("isActive", user.isActive());
+		editor.commit();
 	}
 }
