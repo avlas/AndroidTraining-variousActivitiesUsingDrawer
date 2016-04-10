@@ -1,19 +1,24 @@
-package com.formation.activities;
+package com.formation.model;
 
 import java.io.Serializable;
 
 public class User implements Serializable {
-
+	public String id;
 	private int photo;
 	private String firstName;
 	private String lastName;
 	private boolean isActive;
-
-	public User(String firstName, String lastName, int photo) {
+	
+	public User(){		
+	}
+	
+	public User(String id, String firstName, String lastName, int photo) {
 		super();
+		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.photo = photo;
+		this.isActive = false;
 	}
 
 	public int getPhoto() {

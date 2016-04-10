@@ -69,11 +69,6 @@
             android:layout_height="wrap_content"
             android:text="@string/chk_android" />
 
-        <Button
-            android:id="@+id/button_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/back" />
     </LinearLayout>
 
 </ScrollView>
