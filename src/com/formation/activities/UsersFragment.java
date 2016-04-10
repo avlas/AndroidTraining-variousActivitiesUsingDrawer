@@ -25,7 +25,6 @@ public class UsersFragment extends Fragment {
 		if (!(activity instanceof Callbacks)) {
 			throw new IllegalStateException("Activity must implement fragment's callbacks.");
 		}
-
 		mCallbacks = (Callbacks) activity;
 	}
 	
@@ -34,9 +33,8 @@ public class UsersFragment extends Fragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.activity_users_fragment, container, false);
 
-		adapter = new UserArrayAdapter(view.getContext(), R.layout.activity_users_fragment_row, R.id.row_fullname, UserContent.USERS);
-
 		usersView = (ListView) view.findViewById(R.id.list_users);
+		adapter = new UserArrayAdapter(view.getContext(), R.layout.activity_users_fragment_row, R.id.row_fullname, UserContent.USERS);
 		usersView.setAdapter(adapter);
 
 		addListenerOnList();
