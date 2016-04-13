@@ -27,6 +27,8 @@ public class UserArrayAdapter extends ArrayAdapter<User> {
 		View rowView;
 		if (convertView == null) {
 			// inflater = pour fabriquer une view a partir d'un fichier XML(le model d'une ligne)
+			// l'adapter va creer une nouvelle view et il sait gere le recyclage
+			
 //			LayoutInflater inflater = LayoutInflater.from(listView.getContext());
 //			rowView = inflater.inflate(R.layout.activity_users_fragment_row, listView, false);
 
@@ -47,6 +49,7 @@ public class UserArrayAdapter extends ArrayAdapter<User> {
 				rowView.setBackgroundColor(context.getResources().getColor(R.color.red));
 			}
 		} else {
+			//va recycler la view
 			rowView = convertView;
 		}
 		return rowView;

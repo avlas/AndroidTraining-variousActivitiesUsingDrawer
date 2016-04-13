@@ -54,7 +54,7 @@ public class UsersFragment extends Fragment {
 	private void addListenerOnList() {
 		usersView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			public void onItemClick(AdapterView<?> listView, View itemView, int position, long id) {
 				//mCallbacks.onItemClick((User) adapter.getItem(position).id);*/
 				mCallbacks.onItemClick(UserContent.USERS.get(position).id);
 			}
