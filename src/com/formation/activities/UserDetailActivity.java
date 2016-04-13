@@ -39,7 +39,7 @@ public class UserDetailActivity extends Activity {
 			UserDetailFragment detailFragment = new UserDetailFragment();
 			detailFragment.setArguments(arguments);
 			
-			getFragmentManager().beginTransaction().replace(R.id.userDetailFragment, detailFragment).commit();
+			getFragmentManager().beginTransaction().add(R.id.userDetailFragment, detailFragment).commit();
 		}
 	}
 	
